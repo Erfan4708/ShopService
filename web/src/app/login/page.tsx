@@ -34,27 +34,27 @@ function LoginForm() {
         <div className="grid grid-cols-2 rounded-lg bg-gray-100 p-1 text-sm">
           {(['login', 'register'] as const).map((m) => (
             <button key={m} type="button" onClick={() => { setMode(m); setErr(''); }}
-              className={`rounded-md py-2 ${mode === m ? 'bg-white font-bold shadow-sm' : 'text-gray-500'}`}>{m === 'login' ? 'ظˆط±ظˆط¯' : 'ط«ط¨طھâ€Œظ†ط§ظ…'}</button>
+              className={`rounded-md py-2 ${mode === m ? 'bg-white font-bold shadow-sm' : 'text-gray-500'}`}>{m === 'login' ? 'ورود' : 'ثبت‌نام'}</button>
           ))}
         </div>
         <form onSubmit={submit} className="space-y-3">
           {mode === 'login' ? (
-            <Field label="ط§غŒظ…غŒظ„ غŒط§ ط´ظ…ط§ط±ظ‡ ظ…ظˆط¨ط§غŒظ„"><input className="input" dir="ltr" required autoComplete="username" value={f.identifier} onChange={set('identifier')} /></Field>
+            <Field label="ایمیل یا شماره موبایل"><input className="input" dir="ltr" required autoComplete="username" value={f.identifier} onChange={set('identifier')} /></Field>
           ) : (
             <>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="ظ†ط§ظ…"><input className="input" required value={f.firstName} onChange={set('firstName')} /></Field>
-                <Field label="ظ†ط§ظ… ط®ط§ظ†ظˆط§ط¯ع¯غŒ"><input className="input" required value={f.lastName} onChange={set('lastName')} /></Field>
+                <Field label="نام"><input className="input" required value={f.firstName} onChange={set('firstName')} /></Field>
+                <Field label="نام خانوادگی"><input className="input" required value={f.lastName} onChange={set('lastName')} /></Field>
               </div>
-              <Field label="ط§غŒظ…غŒظ„"><input className="input" dir="ltr" type="email" required autoComplete="email" value={f.email} onChange={set('email')} /></Field>
-              <Field label="ط´ظ…ط§ط±ظ‡ ظ…ظˆط¨ط§غŒظ„ (ط§ط®طھغŒط§ط±غŒ)"><input className="input" dir="ltr" inputMode="tel" value={f.phoneNumber} onChange={set('phoneNumber')} /></Field>
+              <Field label="ایمیل"><input className="input" dir="ltr" type="email" required autoComplete="email" value={f.email} onChange={set('email')} /></Field>
+              <Field label="شماره موبایل (اختیاری)"><input className="input" dir="ltr" inputMode="tel" value={f.phoneNumber} onChange={set('phoneNumber')} /></Field>
             </>
           )}
-          <Field label="ط±ظ…ط² ط¹ط¨ظˆط±" hint={mode === 'register' ? 'ط­ط¯ط§ظ‚ظ„ غ¸ ع©ط§ط±ط§ع©طھط±' : undefined}>
+          <Field label="رمز عبور" hint={mode === 'register' ? 'حداقل ۸ کاراکتر' : undefined}>
             <input className="input" dir="ltr" type="password" required minLength={mode === 'register' ? 8 : 1} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={f.password} onChange={set('password')} />
           </Field>
           {err && <Alert>{err}</Alert>}
-          <button className="btn-primary w-full" disabled={busy}>{mode === 'login' ? 'ظˆط±ظˆط¯' : 'ط³ط§ط®طھ ط­ط³ط§ط¨'}</button>
+          <button className="btn-primary w-full" disabled={busy}>{mode === 'login' ? 'ورود' : 'ساخت حساب'}</button>
         </form>
       </div>
     </div>

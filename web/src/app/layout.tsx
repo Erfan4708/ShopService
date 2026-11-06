@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
-  const name = s['Store.Name'] || 'ظپط±ظˆط´ع¯ط§ظ‡';
-  return { title: { default: name, template: `%s | ${name}` }, description: `ط®ط±غŒط¯ ط¢ظ†ظ„ط§غŒظ† ط§ط² ${name}` };
+  const name = s['Store.Name'] || 'فروشگاه';
+  return { title: { default: name, template: `%s | ${name}` }, description: `خرید آنلاین از ${name}` };
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -19,7 +19,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="fa" dir="rtl">
       <body className="font-sans">
-        <Providers storeName={s['Store.Name'] || 'ظپط±ظˆط´ع¯ط§ظ‡'} currency={s['Store.Currency'] || 'IRT'}>
+        <Providers storeName={s['Store.Name'] || 'فروشگاه'} currency={s['Store.Currency'] || 'IRT'}>
           <Header />
           <main className="mx-auto min-h-[60vh] max-w-6xl px-4 py-6">{children}</main>
           <Footer />

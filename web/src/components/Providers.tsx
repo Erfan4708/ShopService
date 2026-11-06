@@ -6,7 +6,7 @@ import { fetcher } from '@/lib/api';
 import { currencyLabel } from '@/lib/format';
 
 type Ctx = { storeName: string; currency: string };
-const SettingsContext = createContext<Ctx>({ storeName: 'ظپط±ظˆط´ع¯ط§ظ‡', currency: 'طھظˆظ…ط§ظ†' });
+const SettingsContext = createContext<Ctx>({ storeName: 'فروشگاه', currency: 'تومان' });
 export const useStore = () => useContext(SettingsContext);
 
 export default function Providers({ children, storeName, currency }: { children: ReactNode; storeName: string; currency: string }) {

@@ -8,7 +8,7 @@ import type { OrderDetail, StartPayment } from '@/lib/types';
 import { Alert, PageTitle, Price, ProductImg, Spinner, StatusBadge, Timeline } from '@/components/Ui';
 import { formatDate, formatNumber } from '@/lib/format';
 
-const PAY_STATUS = { Pending: 'ط¯ط± ط§ظ†طھط¸ط§ط±', Succeeded: 'ظ…ظˆظپظ‚', Failed: 'ظ†ط§ظ…ظˆظپظ‚' } as const;
+const PAY_STATUS = { Pending: 'در انتظار', Succeeded: 'موفق', Failed: 'ناموفق' } as const;
 
 export default function OrderPage({ params }: { params: { orderNumber: string } }) {
   const { data: o, error, mutate } = useSWR<OrderDetail>(`orders/${encodeURIComponent(params.orderNumber)}`);
@@ -24,7 +24,7 @@ export default function OrderPage({ params }: { params: { orderNumber: string } 
     catch (e: any) { setErr(e.message); setBusy(false); }
   }
   async function cancel() {
-    if (!confirm('ط³ظپط§ط±ط´ ظ„ط؛ظˆ ط´ظˆط¯طں')) return;
+    if (!confirm('سفارش لغو شود؟')) return;
     setBusy(true); setErr('');
     try { await mutate(await post<OrderDetail>(`orders/${o!.orderNumber}/cancel`), false); }
     catch (e: any) { setErr(e.message); } finally { setBusy(false); }
@@ -32,20 +32,20 @@ export default function OrderPage({ params }: { params: { orderNumber: string } 
 
   return (
     <div className="space-y-4">
-      <PageTitle action={<Link href="/orders" className="text-sm text-brand-600">â†گ ظ‡ظ…ظ‡ ط³ظپط§ط±ط´â€Œظ‡ط§</Link>}>
-        ط³ظپط§ط±ط´ <bdi>{o.orderNumber}</bdi> <StatusBadge status={o.status} />
+      <PageTitle action={<Link href="/orders" className="text-sm text-brand-600">â†گ همه سفارش‌ها</Link>}>
+        سفارش <bdi>{o.orderNumber}</bdi> <StatusBadge status={o.status} />
       </PageTitle>
       {err && <Alert>{err}</Alert>}
       {o.status === 'PendingPayment' && (
         <div className="card flex flex-wrap items-center justify-between gap-3 border-amber-300 bg-amber-50">
-          <span className="text-sm">ط§غŒظ† ط³ظپط§ط±ط´ ظ‡ظ†ظˆط² ظ¾ط±ط¯ط§ط®طھ ظ†ط´ط¯ظ‡ ظˆ ط¯ط± ظ…ظ‡ظ„طھ ظ…ظ‚ط±ط± ظ„ط؛ظˆ ظ…غŒâ€Œط´ظˆط¯.</span>
-          <span className="flex gap-2"><button className="btn-primary" disabled={busy} onClick={pay}>ظ¾ط±ط¯ط§ط®طھ</button><button className="btn-outline" disabled={busy} onClick={cancel}>ظ„ط؛ظˆ ط³ظپط§ط±ط´</button></span>
+          <span className="text-sm">این سفارش هنوز پرداخت نشده و در مهلت مقرر لغو می‌شود.</span>
+          <span className="flex gap-2"><button className="btn-primary" disabled={busy} onClick={pay}>پرداخت</button><button className="btn-outline" disabled={busy} onClick={cancel}>لغو سفارش</button></span>
         </div>
       )}
       <div className="grid gap-4 md:grid-cols-[1fr_320px]">
         <div className="space-y-4">
           <section className="card">
-            <h2 className="mb-2 font-bold">ط§ظ‚ظ„ط§ظ…</h2>
+            <h2 className="mb-2 font-bold">اقلام</h2>
             <ul className="divide-y">
               {o.items.map((i) => (
                 <li key={i.productId} className="flex items-center gap-3 py-2">
@@ -56,27 +56,27 @@ export default function OrderPage({ params }: { params: { orderNumber: string } 
               ))}
             </ul>
           </section>
-          <section className="card"><h2 className="mb-3 font-bold">ظ¾غŒع¯غŒط±غŒ</h2>
-            {o.trackingCode && <p className="mb-3 text-sm">ع©ط¯ ط±ظ‡ع¯غŒط±غŒ ظ…ط±ط³ظˆظ„ظ‡: <bdi className="font-bold">{o.trackingCode}</bdi></p>}
+          <section className="card"><h2 className="mb-3 font-bold">پیگیری</h2>
+            {o.trackingCode && <p className="mb-3 text-sm">کد رهگیری مرسوله: <bdi className="font-bold">{o.trackingCode}</bdi></p>}
             <Timeline items={o.history} /></section>
         </div>
         <aside className="space-y-4">
           <section className="card text-sm">
-            <h2 className="mb-2 font-bold">طµظˆط±طھâ€Œط­ط³ط§ط¨</h2>
+            <h2 className="mb-2 font-bold">صورت‌حساب</h2>
             <dl className="space-y-1.5">
-              <div className="flex justify-between"><dt>ط¬ظ…ط¹ ع©ط§ظ„ط§ظ‡ط§</dt><dd><Price value={o.subtotal} /></dd></div>
-              {o.discountTotal > 0 && <div className="flex justify-between text-green-700"><dt>طھط®ظپغŒظپ {o.couponCode && <bdi>({o.couponCode})</bdi>}</dt><dd>âˆ’ <Price value={o.discountTotal} /></dd></div>}
-              <div className="flex justify-between"><dt>ط§ط±ط³ط§ظ„ ({o.shippingMethodName})</dt><dd>{o.shippingCost === 0 ? 'ط±ط§غŒع¯ط§ظ†' : <Price value={o.shippingCost} />}</dd></div>
-              {o.taxTotal > 0 && <div className="flex justify-between"><dt>ظ…ط§ظ„غŒط§طھ</dt><dd><Price value={o.taxTotal} /></dd></div>}
-              <div className="flex justify-between border-t pt-2 text-base font-bold"><dt>ظ…ط¨ظ„ط؛ ع©ظ„</dt><dd><Price value={o.grandTotal} /></dd></div>
+              <div className="flex justify-between"><dt>جمع کالاها</dt><dd><Price value={o.subtotal} /></dd></div>
+              {o.discountTotal > 0 && <div className="flex justify-between text-green-700"><dt>تخفیف {o.couponCode && <bdi>({o.couponCode})</bdi>}</dt><dd>âˆ’ <Price value={o.discountTotal} /></dd></div>}
+              <div className="flex justify-between"><dt>ارسال ({o.shippingMethodName})</dt><dd>{o.shippingCost === 0 ? 'رایگان' : <Price value={o.shippingCost} />}</dd></div>
+              {o.taxTotal > 0 && <div className="flex justify-between"><dt>مالیات</dt><dd><Price value={o.taxTotal} /></dd></div>}
+              <div className="flex justify-between border-t pt-2 text-base font-bold"><dt>مبلغ کل</dt><dd><Price value={o.grandTotal} /></dd></div>
             </dl>
           </section>
-          <section className="card text-sm"><h2 className="mb-2 font-bold">طھط­ظˆغŒظ„â€Œع¯غŒط±ظ†ط¯ظ‡</h2>
+          <section className="card text-sm"><h2 className="mb-2 font-bold">تحویل‌گیرنده</h2>
             <p>{o.receiverName} â€” <bdi>{o.receiverPhone}</bdi></p>
-            <p className="text-gray-600">{o.province}طŒ {o.city}طŒ {o.addressLine}</p><p className="text-gray-600">ع©ط¯ ظ¾ط³طھغŒ: <bdi>{o.postalCode}</bdi></p>
-            {o.note && <p className="mt-2 text-gray-500">طھظˆط¶غŒط­ط§طھ: {o.note}</p>}</section>
+            <p className="text-gray-600">{o.province}، {o.city}، {o.addressLine}</p><p className="text-gray-600">کد پستی: <bdi>{o.postalCode}</bdi></p>
+            {o.note && <p className="mt-2 text-gray-500">توضیحات: {o.note}</p>}</section>
           {o.payments.length > 0 && (
-            <section className="card text-sm"><h2 className="mb-2 font-bold">ظ¾ط±ط¯ط§ط®طھâ€Œظ‡ط§</h2>
+            <section className="card text-sm"><h2 className="mb-2 font-bold">پرداخت‌ها</h2>
               <ul className="space-y-1">{o.payments.map((p) => (
                 <li key={p.id} className="flex justify-between gap-2"><span>{formatDate(p.createdAt)}</span><span>{PAY_STATUS[p.status]}{p.refId && <> آ· <bdi>{p.refId}</bdi></>}</span></li>))}</ul></section>
           )}

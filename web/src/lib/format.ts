@@ -1,6 +1,6 @@
 import type { OrderStatus } from './types';
 
-export const currencyLabel = (code?: string) => (code === 'IRR' ? 'ط±غŒط§ظ„' : code === 'IRT' || !code ? 'طھظˆظ…ط§ظ†' : code);
+export const currencyLabel = (code?: string) => (code === 'IRR' ? 'ریال' : code === 'IRT' || !code ? 'تومان' : code);
 
 export const formatNumber = (n: number | string) => Number(n).toLocaleString('fa-IR');
 
@@ -8,13 +8,13 @@ export const formatDate = (iso: string | null | undefined) =>
   iso ? new Date(iso.endsWith('Z') || iso.includes('+') ? iso : iso + 'Z').toLocaleString('fa-IR', { dateStyle: 'medium', timeStyle: 'short' }) : 'â€”';
 
 export const STATUS_LABEL: Record<OrderStatus, string> = {
-  PendingPayment: 'ط¯ط± ط§ظ†طھط¸ط§ط± ظ¾ط±ط¯ط§ط®طھ',
-  Paid: 'ظ¾ط±ط¯ط§ط®طھ ط´ط¯ظ‡',
-  Processing: 'ط¯ط± ط­ط§ظ„ ظ¾ط±ط¯ط§ط²ط´',
-  Shipped: 'ط§ط±ط³ط§ظ„ ط´ط¯ظ‡',
-  Delivered: 'طھط­ظˆغŒظ„ ط¯ط§ط¯ظ‡ ط´ط¯ظ‡',
-  Cancelled: 'ظ„ط؛ظˆ ط´ط¯ظ‡',
-  Refunded: 'ظ…ط±ط¬ظˆط¹ ط´ط¯ظ‡'
+  PendingPayment: 'در انتظار پرداخت',
+  Paid: 'پرداخت شده',
+  Processing: 'در حال پردازش',
+  Shipped: 'ارسال شده',
+  Delivered: 'تحویل داده شده',
+  Cancelled: 'لغو شده',
+  Refunded: 'مرجوع شده'
 };
 
 export const STATUS_COLOR: Record<OrderStatus, string> = {
@@ -37,11 +37,11 @@ export const NEXT_STATUSES: Record<OrderStatus, OrderStatus[]> = {
   Refunded: []
 };
 
-/** ط§ط±ظ‚ط§ظ… ظپط§ط±ط³غŒ/ط¹ط±ط¨غŒ ط±ط§ ط¨ظ‡ ظ„ط§طھغŒظ† طھط¨ط¯غŒظ„ ظ…غŒâ€Œع©ظ†ط¯ (ط¨ط±ط§غŒ ظپغŒظ„ط¯ظ‡ط§غŒ ط¹ط¯ط¯غŒ/ظ…ظˆط¨ط§غŒظ„) */
+/** ارقام فارسی/عربی را به لاتین تبدیل می‌کند (برای فیلدهای عددی/موبایل) */
 export const faToEn = (s: string) =>
-  s.replace(/[غ°-غ¹]/g, (d) => String('غ°غ±غ²غ³غ´غµغ¶غ·غ¸غ¹'.indexOf(d))).replace(/[ظ -ظ©]/g, (d) => String('ظ ظ،ظ¢ظ£ظ¤ظ¥ظ¦ظ§ظ¨ظ©'.indexOf(d)));
+  s.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
 
-/** ظپظ‚ط· ظ…ط³غŒط± ط¯ط§ط®ظ„غŒ ط³ط§غŒطھ ط±ط§ ط¨ط±ط§غŒ redirect ط¨ط¹ط¯ ط§ط² ظˆط±ظˆط¯ ظ…غŒâ€Œظ¾ط°غŒط±ط¯ (ط¬ظ„ظˆع¯غŒط±غŒ ط§ط² Open Redirect) */
+/** فقط مسیر داخلی سایت را برای redirect بعد از ورود می‌پذیرد (جلوگیری از Open Redirect) */
 export const safeNext = (n: string | null | undefined, fallback = '/') =>
   n && n.startsWith('/') && !n.startsWith('//') && !n.startsWith('/\\') ? n : fallback;
 

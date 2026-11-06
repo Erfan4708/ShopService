@@ -8,8 +8,8 @@ export default function ProductCard({ p }: { p: ProductListItem }) {
     <Link href={`/products/${encodeURIComponent(p.slug)}`} className="card group flex flex-col overflow-hidden p-0 transition hover:shadow-md">
       <div className="relative">
         <ProductImg src={p.mainImageUrl} alt={p.name} className="aspect-square w-full" />
-        {discount > 0 && <span className="badge absolute start-2 top-2 bg-red-600 text-white">{discount.toLocaleString('fa-IR')}ظھ طھط®ظپغŒظپ</span>}
-        {!p.inStock && <span className="badge absolute end-2 top-2 bg-gray-800 text-white">ظ†ط§ظ…ظˆط¬ظˆط¯</span>}
+        {discount > 0 && <span className="badge absolute start-2 top-2 bg-red-600 text-white">{discount.toLocaleString('fa-IR')}٪ تخفیف</span>}
+        {!p.inStock && <span className="badge absolute end-2 top-2 bg-gray-800 text-white">ناموجود</span>}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-3">
         <h3 className="line-clamp-2 text-sm font-medium group-hover:text-brand-600">{p.name}</h3>

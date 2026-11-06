@@ -31,30 +31,30 @@ export default function AdminShipping() {
 
   return (
     <div className="space-y-4">
-      <PageTitle action={editing === null && <button className="btn-primary" onClick={() => edit(null)}>+ ط±ظˆط´ ط§ط±ط³ط§ظ„ ط¬ط¯غŒط¯</button>}>ط±ظˆط´â€Œظ‡ط§غŒ ط§ط±ط³ط§ظ„</PageTitle>
+      <PageTitle action={editing === null && <button className="btn-primary" onClick={() => edit(null)}>+ روش ارسال جدید</button>}>روش‌های ارسال</PageTitle>
       {editing !== null && (
         <form onSubmit={save} className="card space-y-3">
           <div className="grid gap-3 md:grid-cols-3">
-            <Field label="ظ†ط§ظ…"><input className="input" required value={f.name} onChange={set('name')} /></Field>
-            <Field label="ظ‡ط²غŒظ†ظ‡"><input className="input" type="number" min="0" required value={f.cost} onChange={set('cost')} /></Field>
-            <Field label="ط±ط§غŒع¯ط§ظ† ط¨ط§ظ„ط§غŒ ظ…ط¨ظ„ط؛" hint="ط§ط®طھغŒط§ط±غŒ"><input className="input" type="number" min="0" value={f.freeAboveAmount} onChange={set('freeAboveAmount')} /></Field>
-            <Field label="ط²ظ…ط§ظ† طھط­ظˆغŒظ„ (ط±ظˆط²)"><input className="input" type="number" min="0" value={f.estimatedDays} onChange={set('estimatedDays')} /></Field>
-            <Field label="طھط±طھغŒط¨"><input className="input" type="number" value={f.sortOrder} onChange={set('sortOrder')} /></Field>
-            <Field label="طھظˆط¶غŒط­ط§طھ"><input className="input" value={f.description} onChange={set('description')} /></Field>
+            <Field label="نام"><input className="input" required value={f.name} onChange={set('name')} /></Field>
+            <Field label="هزینه"><input className="input" type="number" min="0" required value={f.cost} onChange={set('cost')} /></Field>
+            <Field label="رایگان بالای مبلغ" hint="اختیاری"><input className="input" type="number" min="0" value={f.freeAboveAmount} onChange={set('freeAboveAmount')} /></Field>
+            <Field label="زمان تحویل (روز)"><input className="input" type="number" min="0" value={f.estimatedDays} onChange={set('estimatedDays')} /></Field>
+            <Field label="ترتیب"><input className="input" type="number" value={f.sortOrder} onChange={set('sortOrder')} /></Field>
+            <Field label="توضیحات"><input className="input" value={f.description} onChange={set('description')} /></Field>
           </div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.isActive} onChange={(e) => setF({ ...f, isActive: e.target.checked })} /> ظپط¹ط§ظ„</label>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.isActive} onChange={(e) => setF({ ...f, isActive: e.target.checked })} /> فعال</label>
           {err && <Alert>{err}</Alert>}
-          <div className="flex gap-2"><button className="btn-primary">ط°ط®غŒط±ظ‡</button><button type="button" className="btn-outline" onClick={() => setEditing(null)}>ط§ظ†طµط±ط§ظپ</button></div>
+          <div className="flex gap-2"><button className="btn-primary">ذخیره</button><button type="button" className="btn-outline" onClick={() => setEditing(null)}>انصراف</button></div>
         </form>
       )}
       <div className="card overflow-x-auto p-0">
-        <table className="w-full"><thead className="border-b bg-gray-50"><tr><th className="th">ظ†ط§ظ…</th><th className="th">ظ‡ط²غŒظ†ظ‡</th><th className="th">ط±ط§غŒع¯ط§ظ† ط¨ط§ظ„ط§غŒ</th><th className="th">ط²ظ…ط§ظ†</th><th className="th">ظˆط¶ط¹غŒطھ</th><th className="th" /></tr></thead>
+        <table className="w-full"><thead className="border-b bg-gray-50"><tr><th className="th">نام</th><th className="th">هزینه</th><th className="th">رایگان بالای</th><th className="th">زمان</th><th className="th">وضعیت</th><th className="th" /></tr></thead>
           <tbody className="divide-y">{data.map((m) => (
             <tr key={m.id}><td className="td font-medium">{m.name}</td><td className="td"><Price value={m.cost} /></td><td className="td">{m.freeAboveAmount ? <Price value={m.freeAboveAmount} /> : 'â€”'}</td>
-              <td className="td">{m.estimatedDays ? `${m.estimatedDays.toLocaleString('fa-IR')} ط±ظˆط²` : 'â€”'}</td>
-              <td className="td">{m.isActive ? <span className="badge bg-green-100 text-green-800">ظپط¹ط§ظ„</span> : <span className="badge bg-gray-200 text-gray-700">ط؛غŒط±ظپط¹ط§ظ„</span>}</td>
-              <td className="td whitespace-nowrap"><button className="text-brand-600" onClick={() => edit(m)}>ظˆغŒط±ط§غŒط´</button>
-                <button className="ms-3 text-red-600" onClick={async () => { if (confirm('ط­ط°ظپ ط´ظˆط¯طں')) { await del(`admin/shipping-methods/${m.id}`); await mutate(); } }}>ط­ط°ظپ</button></td></tr>))}</tbody></table>
+              <td className="td">{m.estimatedDays ? `${m.estimatedDays.toLocaleString('fa-IR')} روز` : 'â€”'}</td>
+              <td className="td">{m.isActive ? <span className="badge bg-green-100 text-green-800">فعال</span> : <span className="badge bg-gray-200 text-gray-700">غیرفعال</span>}</td>
+              <td className="td whitespace-nowrap"><button className="text-brand-600" onClick={() => edit(m)}>ویرایش</button>
+                <button className="ms-3 text-red-600" onClick={async () => { if (confirm('حذف شود؟')) { await del(`admin/shipping-methods/${m.id}`); await mutate(); } }}>حذف</button></td></tr>))}</tbody></table>
       </div>
     </div>
   );

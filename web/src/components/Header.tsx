@@ -24,14 +24,14 @@ export default function Header() {
           className="hidden flex-1 md:block"
           onSubmit={(e) => { e.preventDefault(); router.push(`/products?search=${encodeURIComponent(q)}`); }}
         >
-          <input className="input" placeholder="ط¬ط³طھط¬ظˆغŒ ظ…ط­طµظˆظ„â€¦" value={q} onChange={(e) => setQ(e.target.value)} aria-label="ط¬ط³طھط¬ظˆ" />
+          <input className="input" placeholder="جستجوی محصول…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="جستجو" />
         </form>
 
         <nav className="ms-auto flex items-center gap-2 text-sm">
-          <Link href="/products" className="btn-outline hidden sm:inline-flex">ظ…ط­طµظˆظ„ط§طھ</Link>
-          <Link href="/track" className="btn-outline hidden sm:inline-flex">ظ¾غŒع¯غŒط±غŒ ط³ظپط§ط±ط´</Link>
-          <Link href="/cart" className="btn-outline relative" aria-label="ط³ط¨ط¯ ط®ط±غŒط¯">
-            ط³ط¨ط¯ ط®ط±غŒط¯
+          <Link href="/products" className="btn-outline hidden sm:inline-flex">محصولات</Link>
+          <Link href="/track" className="btn-outline hidden sm:inline-flex">پیگیری سفارش</Link>
+          <Link href="/cart" className="btn-outline relative" aria-label="سبد خرید">
+            سبد خرید
             {cart && cart.itemCount > 0 && (
               <span className="absolute -top-2 -start-2 rounded-full bg-brand-600 px-1.5 text-xs text-white">{formatNumber(cart.itemCount)}</span>
             )}
@@ -41,15 +41,15 @@ export default function Header() {
               <button className="btn-primary" onClick={() => setMenu((m) => !m)}>{user.firstName}</button>
               {menu && (
                 <div className="absolute end-0 mt-2 w-44 rounded-lg border bg-white py-1 shadow-lg" onClick={() => setMenu(false)}>
-                  <Link className="block px-4 py-2 hover:bg-gray-50" href="/account">ط­ط³ط§ط¨ ع©ط§ط±ط¨ط±غŒ</Link>
-                  <Link className="block px-4 py-2 hover:bg-gray-50" href="/orders">ط³ظپط§ط±ط´â€Œظ‡ط§غŒ ظ…ظ†</Link>
-                  {isStaff && <Link className="block px-4 py-2 hover:bg-gray-50" href="/admin">ظ¾ظ†ظ„ ظ…ط¯غŒط±غŒطھ</Link>}
-                  <button className="block w-full px-4 py-2 text-start text-red-600 hover:bg-gray-50" onClick={async () => { await logout(); router.push('/'); router.refresh(); }}>ط®ط±ظˆط¬</button>
+                  <Link className="block px-4 py-2 hover:bg-gray-50" href="/account">حساب کاربری</Link>
+                  <Link className="block px-4 py-2 hover:bg-gray-50" href="/orders">سفارش‌های من</Link>
+                  {isStaff && <Link className="block px-4 py-2 hover:bg-gray-50" href="/admin">پنل مدیریت</Link>}
+                  <button className="block w-full px-4 py-2 text-start text-red-600 hover:bg-gray-50" onClick={async () => { await logout(); router.push('/'); router.refresh(); }}>خروج</button>
                 </div>
               )}
             </div>
           ) : (
-            <Link href="/login" className="btn-primary">ظˆط±ظˆط¯ / ط«ط¨طھâ€Œظ†ط§ظ…</Link>
+            <Link href="/login" className="btn-primary">ورود / ثبت‌نام</Link>
           )}
         </nav>
       </div>

@@ -8,7 +8,7 @@ import type { Paged, Role } from '@/lib/types';
 import { Alert, Empty, PageTitle, Pagination, Spinner } from '@/components/Ui';
 
 type AdminUser = { id: string; email: string; phoneNumber: string | null; fullName: string; role: Role; isActive: boolean; createdAt: string; ordersCount: number };
-const ROLE_LABEL: Record<Role, string> = { Customer: 'ظ…ط´طھط±غŒ', Manager: 'ظ…ط¯غŒط± ظ…ط­طھظˆط§', Admin: 'ظ…ط¯غŒط± ع©ظ„' };
+const ROLE_LABEL: Record<Role, string> = { Customer: 'مشتری', Manager: 'مدیر محتوا', Admin: 'مدیر کل' };
 
 export default function AdminUsers() {
   const [search, setSearch] = useState('');
@@ -20,19 +20,19 @@ export default function AdminUsers() {
 
   return (
     <div className="space-y-4">
-      <PageTitle>ع©ط§ط±ط¨ط±ط§ظ†</PageTitle>
+      <PageTitle>کاربران</PageTitle>
       <form className="card flex gap-3" onSubmit={(e) => { e.preventDefault(); setPage(1); setQ(search); }}>
-        <input className="input !w-72" placeholder="ط§غŒظ…غŒظ„ / ظ†ط§ظ… / ظ…ظˆط¨ط§غŒظ„" value={search} onChange={(e) => setSearch(e.target.value)} /><button className="btn-outline">ط¬ط³طھط¬ظˆ</button>
+        <input className="input !w-72" placeholder="ایمیل / نام / موبایل" value={search} onChange={(e) => setSearch(e.target.value)} /><button className="btn-outline">جستجو</button>
       </form>
       {err && <Alert>{err}</Alert>}
-      {!data ? <Spinner /> : data.items.length === 0 ? <Empty>ع©ط§ط±ط¨ط±غŒ غŒط§ظپطھ ظ†ط´ط¯.</Empty> : (
+      {!data ? <Spinner /> : data.items.length === 0 ? <Empty>کاربری یافت نشد.</Empty> : (
         <div className="card overflow-x-auto p-0">
-          <table className="w-full"><thead className="border-b bg-gray-50"><tr><th className="th">ظ†ط§ظ…</th><th className="th">ط§غŒظ…غŒظ„</th><th className="th">ظ…ظˆط¨ط§غŒظ„</th><th className="th">ط³ظپط§ط±ط´â€Œظ‡ط§</th><th className="th">ط¹ط¶ظˆغŒطھ</th><th className="th">ظ†ظ‚ط´</th><th className="th">ظˆط¶ط¹غŒطھ</th></tr></thead>
+          <table className="w-full"><thead className="border-b bg-gray-50"><tr><th className="th">نام</th><th className="th">ایمیل</th><th className="th">موبایل</th><th className="th">سفارش‌ها</th><th className="th">عضویت</th><th className="th">نقش</th><th className="th">وضعیت</th></tr></thead>
             <tbody className="divide-y">{data.items.map((u) => (
               <tr key={u.id}><td className="td font-medium">{u.fullName}</td><td className="td"><bdi>{u.email}</bdi></td><td className="td"><bdi>{u.phoneNumber ?? 'â€”'}</bdi></td><td className="td">{u.ordersCount.toLocaleString('fa-IR')}</td><td className="td">{formatDate(u.createdAt)}</td>
-                <td className="td"><select className="input !w-32 !py-1" value={u.role} aria-label="ظ†ظ‚ط´" onChange={(e) => update(u.id, { role: e.target.value as Role })}>
+                <td className="td"><select className="input !w-32 !py-1" value={u.role} aria-label="نقش" onChange={(e) => update(u.id, { role: e.target.value as Role })}>
                   {(Object.keys(ROLE_LABEL) as Role[]).map((r) => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}</select></td>
-                <td className="td"><button className={u.isActive ? 'text-red-600' : 'text-green-700'} onClick={() => update(u.id, { isActive: !u.isActive })}>{u.isActive ? 'ط؛غŒط±ظپط¹ط§ظ„â€Œط³ط§ط²غŒ' : 'ظپط¹ط§ظ„â€Œط³ط§ط²غŒ'}</button></td></tr>))}</tbody></table>
+                <td className="td"><button className={u.isActive ? 'text-red-600' : 'text-green-700'} onClick={() => update(u.id, { isActive: !u.isActive })}>{u.isActive ? 'غیرفعال‌سازی' : 'فعال‌سازی'}</button></td></tr>))}</tbody></table>
         </div>
       )}
       {data && <Pagination page={data.page} totalPages={data.totalPages} onPage={setPage} />}

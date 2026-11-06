@@ -13,7 +13,7 @@ const load = (slug: string) => serverGet<ProductDetail>(`products/${encodeURICom
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const p = await load(params.slug);
-  return p ? { title: p.name, description: p.shortDescription ?? undefined } : { title: 'ظ…ط­طµظˆظ„' };
+  return p ? { title: p.name, description: p.shortDescription ?? undefined } : { title: 'محصول' };
 }
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
@@ -23,8 +23,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   return (
     <div className="space-y-6">
-      <nav className="text-sm text-gray-500" aria-label="ظ…ط³غŒط±">
-        <Link href="/products" className="hover:text-brand-600">ظ…ط­طµظˆظ„ط§طھ</Link> /{' '}
+      <nav className="text-sm text-gray-500" aria-label="مسیر">
+        <Link href="/products" className="hover:text-brand-600">محصولات</Link> /{' '}
         <Link href={`/products?category=${encodeURIComponent(p.categorySlug)}`} className="hover:text-brand-600">{p.categoryName}</Link>
       </nav>
 
@@ -33,9 +33,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">{p.name}</h1>
           <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-            {p.brand && <span>ط¨ط±ظ†ط¯: <b className="text-gray-700">{p.brand}</b></span>}
-            <span>ع©ط¯ ع©ط§ظ„ط§: <bdi>{p.sku}</bdi></span>
-            {p.reviewCount > 0 && <span><Stars value={p.averageRating} /> ({p.reviewCount.toLocaleString('fa-IR')} ظ†ط¸ط±)</span>}
+            {p.brand && <span>برند: <b className="text-gray-700">{p.brand}</b></span>}
+            <span>کد کالا: <bdi>{p.sku}</bdi></span>
+            {p.reviewCount > 0 && <span><Stars value={p.averageRating} /> ({p.reviewCount.toLocaleString('fa-IR')} نظر)</span>}
           </div>
           {p.shortDescription && <p className="text-gray-600">{p.shortDescription}</p>}
 
@@ -45,19 +45,19 @@ export default async function ProductPage({ params }: { params: { slug: string }
               {discount > 0 && (
                 <>
                   <span className="text-sm text-gray-400 line-through"><Price value={p.compareAtPrice!} /></span>
-                  <span className="badge bg-red-600 text-white">{discount.toLocaleString('fa-IR')}ظھ</span>
+                  <span className="badge bg-red-600 text-white">{discount.toLocaleString('fa-IR')}٪</span>
                 </>
               )}
             </div>
             {p.inStock && p.stockQuantity !== null && p.stockQuantity <= 5 && (
-              <p className="text-sm text-amber-700">طھظ†ظ‡ط§ {p.stockQuantity.toLocaleString('fa-IR')} ط¹ط¯ط¯ ط¯ط± ط§ظ†ط¨ط§ط± ط¨ط§ظ‚غŒ ظ…ط§ظ†ط¯ظ‡ ط§ط³طھ.</p>
+              <p className="text-sm text-amber-700">تنها {p.stockQuantity.toLocaleString('fa-IR')} عدد در انبار باقی مانده است.</p>
             )}
             <AddToCart productId={p.id} inStock={p.inStock} maxQty={p.stockQuantity} />
           </div>
 
           {p.attributes.length > 0 && (
             <div className="card">
-              <h2 className="mb-2 font-bold">ظ…ط´ط®طµط§طھ</h2>
+              <h2 className="mb-2 font-bold">مشخصات</h2>
               <dl className="divide-y text-sm">
                 {p.attributes.map((a, i) => (
                   <div key={i} className="flex justify-between gap-4 py-2"><dt className="text-gray-500">{a.name}</dt><dd>{a.value}</dd></div>
@@ -70,7 +70,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
       {p.description && (
         <section className="card">
-          <h2 className="mb-2 text-lg font-bold">طھظˆط¶غŒط­ط§طھ</h2>
+          <h2 className="mb-2 text-lg font-bold">توضیحات</h2>
           <p className="whitespace-pre-line leading-8 text-gray-700">{p.description}</p>
         </section>
       )}

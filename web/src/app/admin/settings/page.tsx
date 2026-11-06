@@ -15,13 +15,13 @@ export default function AdminSettings() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault(); setMsg(null);
-    try { await mutate(await put<Setting[]>('admin/settings', { settings: vals }), false); setMsg({ kind: 'success', text: 'طھظ†ط¸غŒظ…ط§طھ ط°ط®غŒط±ظ‡ ط´ط¯. (ظ†ط§ظ… ظپط±ظˆط´ع¯ط§ظ‡ ظˆ ظˆط§ط­ط¯ ظ¾ظˆظ„ ط¨ط§ ط±ظپط±ط´ طµظپط­ظ‡ ط§ط¹ظ…ط§ظ„ ظ…غŒâ€Œط´ظˆط¯.)' }); }
+    try { await mutate(await put<Setting[]>('admin/settings', { settings: vals }), false); setMsg({ kind: 'success', text: 'تنظیمات ذخیره شد. (نام فروشگاه و واحد پول با رفرش صفحه اعمال می‌شود.)' }); }
     catch (e: any) { setMsg({ kind: 'error', text: e.message }); }
   }
 
   return (
     <form onSubmit={save} className="card space-y-4">
-      <PageTitle>طھظ†ط¸غŒظ…ط§طھ ظپط±ظˆط´ع¯ط§ظ‡</PageTitle>
+      <PageTitle>تنظیمات فروشگاه</PageTitle>
       {data.map((s) => (
         <label key={s.key} className="block">
           <span className="label">{s.description ?? s.key} <bdi className="font-normal text-gray-400">({s.key})</bdi></span>
@@ -29,7 +29,7 @@ export default function AdminSettings() {
         </label>
       ))}
       {msg && <Alert kind={msg.kind}>{msg.text}</Alert>}
-      <button className="btn-primary">ط°ط®غŒط±ظ‡ طھظ†ط¸غŒظ…ط§طھ</button>
+      <button className="btn-primary">ذخیره تنظیمات</button>
     </form>
   );
 }

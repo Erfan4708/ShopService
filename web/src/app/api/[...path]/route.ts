@@ -28,7 +28,7 @@ function refreshTokens(refreshToken: string): Promise<Tokens | null> {
     }
   })();
   inflight.set(refreshToken, p);
-  setTimeout(() => inflight.delete(refreshToken), 30_000); // ط¯ط±ط®ظˆط§ط³طھâ€Œظ‡ط§غŒغŒ ع©ظ‡ ظ‡ظ†ظˆط² ع©ظˆع©غŒ ظ‚ط¯غŒظ…غŒ ط¯ط§ط±ظ†ط¯ ظ‡ظ…ط§ظ† ظ†طھغŒط¬ظ‡ ط±ط§ ظ…غŒâ€Œع¯غŒط±ظ†ط¯
+  setTimeout(() => inflight.delete(refreshToken), 30_000); // درخواست‌هایی که هنوز کوکی قدیمی دارند همان نتیجه را می‌گیرند
   return p;
 }
 
@@ -83,7 +83,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
       if (rotated) upstream = await call(rotated.accessToken);
     }
   } catch {
-    return NextResponse.json({ status: 502, code: 'upstream_unreachable', title: 'ط§ط±طھط¨ط§ط· ط¨ط§ ط³ط±ظˆط± ط¨ط±ظ‚ط±ط§ط± ظ†ط´ط¯.' }, { status: 502 });
+    return NextResponse.json({ status: 502, code: 'upstream_unreachable', title: 'ارتباط با سرور برقرار نشد.' }, { status: 502 });
   }
 
   const text = upstream.status === 204 ? '' : await upstream.text();
@@ -100,7 +100,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
           headers: { Authorization: `Bearer ${json.accessToken}`, 'X-Cart-Token': cartToken },
           cache: 'no-store'
         });
-      } catch { /* ط§ط¯ط؛ط§ظ… ط³ط¨ط¯ ط­غŒط§طھغŒ ظ†غŒط³طھ */ }
+      } catch { /* ادغام سبد حیاتی نیست */ }
       res.cookies.set('cart_token', '', { ...COOKIE, maxAge: 0 });
     }
     return res;
@@ -112,7 +112,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
 
   if (path === 'auth/logout') clearAuthCookies(out);
   if (rotated) setAuthCookies(out, rotated);
-  else if (upstream.status === 401 && refresh && !isAuthPath) clearAuthCookies(out); // refresh ظ‡ظ… ظ†ط§ظ…ط¹طھط¨ط± ط§ط³طھ
+  else if (upstream.status === 401 && refresh && !isAuthPath) clearAuthCookies(out); // refresh هم نامعتبر است
   if (path.startsWith('cart') && upstream.ok && json && typeof json.token === 'string' && !access) {
     out.cookies.set('cart_token', json.token, { ...COOKIE, maxAge: 60 * 60 * 24 * 30 });
   }

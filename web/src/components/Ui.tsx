@@ -25,7 +25,7 @@ export function Alert({ kind = 'error', children }: { kind?: 'error' | 'success'
 }
 
 export function Spinner() {
-  return <div className="py-12 text-center text-sm text-gray-500">ط¯ط± ط­ط§ظ„ ط¨ط§ط±ع¯ط°ط§ط±غŒâ€¦</div>;
+  return <div className="py-12 text-center text-sm text-gray-500">در حال بارگذاری…</div>;
 }
 
 export function Empty({ children }: { children: ReactNode }) {
@@ -35,7 +35,7 @@ export function Empty({ children }: { children: ReactNode }) {
 export function Stars({ value }: { value: number }) {
   const full = Math.round(value);
   return (
-    <span className="text-amber-500" aria-label={`ط§ظ…طھغŒط§ط² ${value}`}>
+    <span className="text-amber-500" aria-label={`امتیاز ${value}`}>
       {'âک…'.repeat(full)}
       <span className="text-gray-300">{'âک…'.repeat(5 - full)}</span>
     </span>
@@ -48,7 +48,7 @@ export function Pagination({ page, totalPages, basePath = '/products', query = '
   for (let p = Math.max(1, page - 2); p <= Math.min(totalPages, page + 2); p++) pages.push(p);
   const cls = (active: boolean) => `btn ${active ? 'bg-brand-600 text-white' : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'} min-w-9 px-3`;
   return (
-    <nav className="mt-6 flex flex-wrap justify-center gap-1" aria-label="طµظپط­ظ‡â€Œط¨ظ†ط¯غŒ">
+    <nav className="mt-6 flex flex-wrap justify-center gap-1" aria-label="صفحه‌بندی">
       {pages.map((p) => {
         const params = new URLSearchParams(query);
         params.set('page', String(p));

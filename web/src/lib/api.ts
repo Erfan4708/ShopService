@@ -22,12 +22,12 @@ export async function api<T = unknown>(path: string, init: RequestInit & { json?
   let data: any = null;
   try { data = text ? JSON.parse(text) : null; } catch { /* ignore */ }
   if (!res.ok) {
-    let msg: string = data?.title || data?.message || 'ط®ط·ط§غŒغŒ ط±ط® ط¯ط§ط¯. ط¯ظˆط¨ط§ط±ظ‡ طھظ„ط§ط´ ع©ظ†غŒط¯.';
+    let msg: string = data?.title || data?.message || 'خطایی رخ داد. دوباره تلاش کنید.';
     if (data?.errors && typeof data.errors === 'object') {
       const first = Object.values(data.errors as Record<string, string[]>)[0];
       if (Array.isArray(first) && first[0]) msg = first[0];
     }
-    if (res.status === 429) msg = 'طھط¹ط¯ط§ط¯ ط¯ط±ط®ظˆط§ط³طھâ€Œظ‡ط§ ط²غŒط§ط¯ ط§ط³طھ. ع©ظ…غŒ ط¨ط¹ط¯ طھظ„ط§ط´ ع©ظ†غŒط¯.';
+    if (res.status === 429) msg = 'تعداد درخواست‌ها زیاد است. کمی بعد تلاش کنید.';
     throw new ApiError(msg, res.status, data?.code);
   }
   return data as T;
