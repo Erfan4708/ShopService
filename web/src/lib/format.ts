@@ -1,21 +1,6 @@
 import type { OrderStatus } from './types';
 
-export const currencyLabel = (code?: string) => (code === 'IRR' ? 'ریال' : code === 'IRT' || !code ? 'تومان' : code);
-
-export const formatNumber = (n: number | string) => Number(n).toLocaleString('fa-IR');
-
-export const formatDate = (iso: string | null | undefined) =>
-  iso ? new Date(iso.endsWith('Z') || iso.includes('+') ? iso : iso + 'Z').toLocaleString('fa-IR', { dateStyle: 'medium', timeStyle: 'short' }) : 'â€”';
-
-export const STATUS_LABEL: Record<OrderStatus, string> = {
-  PendingPayment: 'در انتظار پرداخت',
-  Paid: 'پرداخت شده',
-  Processing: 'در حال پردازش',
-  Shipped: 'ارسال شده',
-  Delivered: 'تحویل داده شده',
-  Cancelled: 'لغو شده',
-  Refunded: 'مرجوع شده'
-};
+export const ORDER_STATUSES: OrderStatus[] = ['PendingPayment', 'Paid', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Refunded'];
 
 export const STATUS_COLOR: Record<OrderStatus, string> = {
   PendingPayment: 'bg-amber-100 text-amber-800',
@@ -37,11 +22,9 @@ export const NEXT_STATUSES: Record<OrderStatus, OrderStatus[]> = {
   Refunded: []
 };
 
-/** ارقام فارسی/عربی را به لاتین تبدیل می‌کند (برای فیلدهای عددی/موبایل) */
 export const faToEn = (s: string) =>
   s.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
 
-/** فقط مسیر داخلی سایت را برای redirect بعد از ورود می‌پذیرد (جلوگیری از Open Redirect) */
 export const safeNext = (n: string | null | undefined, fallback = '/') =>
   n && n.startsWith('/') && !n.startsWith('//') && !n.startsWith('/\\') ? n : fallback;
 

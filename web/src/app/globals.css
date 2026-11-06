@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== تم فروشگاه: برای هر کسب‌وکار فقط این رنگ‌ها را عوض کنید (فرمت: R G B) ===== */
 :root {
   --brand-50: 238 242 255;
   --brand-100: 224 231 255;
@@ -12,6 +11,7 @@
 }
 
 html { -webkit-text-size-adjust: 100%; }
+html[lang='en'] body { font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 body { @apply bg-gray-50 text-gray-900 antialiased; }
 
 @layer components {

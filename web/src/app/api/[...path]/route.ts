@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { API_INTERNAL } from '@/lib/server';
-
+import { LOCALE_COOKIE, parseLocale } from '@/lib/i18n/config';
+import { translate } from '@/lib/i18n/translate';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,7 +29,7 @@ function refreshTokens(refreshToken: string): Promise<Tokens | null> {
     }
   })();
   inflight.set(refreshToken, p);
-  setTimeout(() => inflight.delete(refreshToken), 30_000); // درخواست‌هایی که هنوز کوکی قدیمی دارند همان نتیجه را می‌گیرند
+  setTimeout(() => inflight.delete(refreshToken), 30_000);
   return p;
 }
 
@@ -49,6 +50,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
   let access = req.cookies.get('access_token')?.value;
   const refresh = req.cookies.get('refresh_token')?.value;
   const cartToken = req.cookies.get('cart_token')?.value;
+  const locale = parseLocale(req.cookies.get(LOCALE_COOKIE)?.value);
 
   let body: BodyInit | undefined;
   let contentType = req.headers.get('content-type') || undefined;
@@ -66,7 +68,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
   }
 
   const call = (token?: string) => {
-    const headers: Record<string, string> = { Accept: 'application/json' };
+    const headers: Record<string, string> = { Accept: 'application/json', 'Accept-Language': locale };
     if (contentType) headers['Content-Type'] = contentType;
     if (token) headers['Authorization'] = `Bearer ${token}`;
     if (cartToken) headers['X-Cart-Token'] = cartToken;
@@ -83,7 +85,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
       if (rotated) upstream = await call(rotated.accessToken);
     }
   } catch {
-    return NextResponse.json({ status: 502, code: 'upstream_unreachable', title: 'ارتباط با سرور برقرار نشد.' }, { status: 502 });
+    return NextResponse.json({ status: 502, code: 'upstream_unreachable', title: translate(locale, 'common.serverUnreachable') }, { status: 502 });
   }
 
   const text = upstream.status === 204 ? '' : await upstream.text();
@@ -100,7 +102,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
           headers: { Authorization: `Bearer ${json.accessToken}`, 'X-Cart-Token': cartToken },
           cache: 'no-store'
         });
-      } catch { /* ادغام سبد حیاتی نیست */ }
+      } catch {}
       res.cookies.set('cart_token', '', { ...COOKIE, maxAge: 0 });
     }
     return res;
@@ -112,7 +114,7 @@ async function handle(req: NextRequest, ctx: { params: { path: string[] } }) {
 
   if (path === 'auth/logout') clearAuthCookies(out);
   if (rotated) setAuthCookies(out, rotated);
-  else if (upstream.status === 401 && refresh && !isAuthPath) clearAuthCookies(out); // refresh هم نامعتبر است
+  else if (upstream.status === 401 && refresh && !isAuthPath) clearAuthCookies(out);
   if (path.startsWith('cart') && upstream.ok && json && typeof json.token === 'string' && !access) {
     out.cookies.set('cart_token', json.token, { ...COOKIE, maxAge: 60 * 60 * 24 * 30 });
   }

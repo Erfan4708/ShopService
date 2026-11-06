@@ -1,3 +1,6 @@
+import { getClientLocale } from './i18n/config';
+import { translate } from './i18n/translate';
+
 export class ApiError extends Error {
   status: number;
   code?: string;
@@ -22,12 +25,13 @@ export async function api<T = unknown>(path: string, init: RequestInit & { json?
   let data: any = null;
   try { data = text ? JSON.parse(text) : null; } catch { /* ignore */ }
   if (!res.ok) {
-    let msg: string = data?.title || data?.message || 'خطایی رخ داد. دوباره تلاش کنید.';
+    const locale = getClientLocale();
+    let msg: string = data?.title || data?.message || translate(locale, 'error.generic');
     if (data?.errors && typeof data.errors === 'object') {
       const first = Object.values(data.errors as Record<string, string[]>)[0];
       if (Array.isArray(first) && first[0]) msg = first[0];
     }
-    if (res.status === 429) msg = 'تعداد درخواست‌ها زیاد است. کمی بعد تلاش کنید.';
+    if (res.status === 429) msg = translate(locale, 'error.tooManyRequests');
     throw new ApiError(msg, res.status, data?.code);
   }
   return data as T;

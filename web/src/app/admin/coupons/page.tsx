@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import useSWR from 'swr';
 import { del, post, put } from '@/lib/api';
-import { formatDate, numOrNull, toIsoOrNull, toLocalInput } from '@/lib/format';
+import { numOrNull, toIsoOrNull, toLocalInput } from '@/lib/format';
+import { useI18n } from '@/lib/i18n/client';
 import type { Coupon } from '@/lib/types';
 import { Alert, Field, PageTitle, Spinner } from '@/components/Ui';
 
 const EMPTY = { code: '', description: '', type: 'Percent', value: '', maxDiscountAmount: '', minOrderAmount: '', usageLimit: '', startsAt: '', expiresAt: '', isActive: true };
 
 export default function AdminCoupons() {
+  const { t, fmt } = useI18n();
   const { data, mutate } = useSWR<Coupon[]>('admin/coupons');
   const [editing, setEditing] = useState<string | null>(null);
   const [f, setF] = useState(EMPTY);
@@ -30,33 +32,33 @@ export default function AdminCoupons() {
 
   return (
     <div className="space-y-4">
-      <PageTitle action={editing === null && <button className="btn-primary" onClick={() => edit(null)}>+ کوپن جدید</button>}>کدهای تخفیف</PageTitle>
+      <PageTitle action={editing === null && <button className="btn-primary" onClick={() => edit(null)}>{t('admin.coupons.new')}</button>}>{t('admin.coupons.title')}</PageTitle>
       {editing !== null && (
         <form onSubmit={save} className="card space-y-3">
           <div className="grid gap-3 md:grid-cols-3">
-            <Field label="کد"><input className="input" dir="ltr" required value={f.code} onChange={set('code')} /></Field>
-            <Field label="نوع"><select className="input" value={f.type} onChange={set('type')}><option value="Percent">درصدی</option><option value="FixedAmount">مبلغ ثابت</option></select></Field>
-            <Field label={f.type === 'Percent' ? 'درصد تخفیف' : 'مبلغ تخفیف'}><input className="input" type="number" min="0" step="any" required value={f.value} onChange={set('value')} /></Field>
-            <Field label="سقف تخفیف" hint="اختیاری"><input className="input" type="number" min="0" value={f.maxDiscountAmount} onChange={set('maxDiscountAmount')} /></Field>
-            <Field label="حداقل مبلغ سفارش" hint="اختیاری"><input className="input" type="number" min="0" value={f.minOrderAmount} onChange={set('minOrderAmount')} /></Field>
-            <Field label="سقف دفعات استفاده" hint="اختیاری"><input className="input" type="number" min="1" value={f.usageLimit} onChange={set('usageLimit')} /></Field>
-            <Field label="شروع اعتبار"><input className="input" type="datetime-local" value={f.startsAt} onChange={set('startsAt')} /></Field>
-            <Field label="پایان اعتبار"><input className="input" type="datetime-local" value={f.expiresAt} onChange={set('expiresAt')} /></Field>
-            <Field label="توضیحات"><input className="input" value={f.description} onChange={set('description')} /></Field>
+            <Field label={t('admin.coupons.code')}><input className="input" dir="ltr" required value={f.code} onChange={set('code')} /></Field>
+            <Field label={t('admin.coupons.type')}><select className="input" value={f.type} onChange={set('type')}><option value="Percent">{t('admin.coupons.percent')}</option><option value="FixedAmount">{t('admin.coupons.fixed')}</option></select></Field>
+            <Field label={f.type === 'Percent' ? t('admin.coupons.valuePercent') : t('admin.coupons.valueAmount')}><input className="input" type="number" min="0" step="any" required value={f.value} onChange={set('value')} /></Field>
+            <Field label={t('admin.coupons.maxDiscount')} hint={t('common.optional')}><input className="input" type="number" min="0" value={f.maxDiscountAmount} onChange={set('maxDiscountAmount')} /></Field>
+            <Field label={t('admin.coupons.minOrder')} hint={t('common.optional')}><input className="input" type="number" min="0" value={f.minOrderAmount} onChange={set('minOrderAmount')} /></Field>
+            <Field label={t('admin.coupons.usageLimit')} hint={t('common.optional')}><input className="input" type="number" min="1" value={f.usageLimit} onChange={set('usageLimit')} /></Field>
+            <Field label={t('admin.coupons.startsAt')}><input className="input" type="datetime-local" value={f.startsAt} onChange={set('startsAt')} /></Field>
+            <Field label={t('admin.coupons.expiresAt')}><input className="input" type="datetime-local" value={f.expiresAt} onChange={set('expiresAt')} /></Field>
+            <Field label={t('admin.coupons.description')}><input className="input" value={f.description} onChange={set('description')} /></Field>
           </div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.isActive} onChange={(e) => setF({ ...f, isActive: e.target.checked })} /> فعال</label>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.isActive} onChange={(e) => setF({ ...f, isActive: e.target.checked })} /> {t('common.active')}</label>
           {err && <Alert>{err}</Alert>}
-          <div className="flex gap-2"><button className="btn-primary">ذخیره</button><button type="button" className="btn-outline" onClick={() => setEditing(null)}>انصراف</button></div>
+          <div className="flex gap-2"><button className="btn-primary">{t('common.save')}</button><button type="button" className="btn-outline" onClick={() => setEditing(null)}>{t('common.cancel')}</button></div>
         </form>
       )}
       <div className="card overflow-x-auto p-0">
-        <table className="w-full"><thead className="border-b bg-gray-50"><tr><th className="th">کد</th><th className="th">مقدار</th><th className="th">استفاده</th><th className="th">انقضا</th><th className="th">وضعیت</th><th className="th" /></tr></thead>
+        <table className="w-full"><thead className="border-b bg-gray-50"><tr><th className="th">{t('admin.coupons.code')}</th><th className="th">{t('admin.coupons.value')}</th><th className="th">{t('admin.coupons.usage')}</th><th className="th">{t('admin.coupons.expiry')}</th><th className="th">{t('orders.status')}</th><th className="th" /></tr></thead>
           <tbody className="divide-y">{data.map((c) => (
-            <tr key={c.id}><td className="td font-medium"><bdi>{c.code}</bdi></td><td className="td">{c.type === 'Percent' ? `${c.value.toLocaleString('fa-IR')}٪` : c.value.toLocaleString('fa-IR')}</td>
-              <td className="td">{c.usedCount.toLocaleString('fa-IR')}{c.usageLimit ? ` / ${c.usageLimit.toLocaleString('fa-IR')}` : ''}</td><td className="td">{formatDate(c.expiresAt)}</td>
-              <td className="td">{c.isActive ? <span className="badge bg-green-100 text-green-800">فعال</span> : <span className="badge bg-gray-200 text-gray-700">غیرفعال</span>}</td>
-              <td className="td whitespace-nowrap"><button className="text-brand-600" onClick={() => edit(c)}>ویرایش</button>
-                <button className="ms-3 text-red-600" onClick={async () => { if (confirm('حذف شود؟')) { await del(`admin/coupons/${c.id}`); await mutate(); } }}>حذف</button></td></tr>))}</tbody></table>
+            <tr key={c.id}><td className="td font-medium"><bdi>{c.code}</bdi></td><td className="td">{c.type === 'Percent' ? fmt.percent(c.value) : fmt.number(c.value)}</td>
+              <td className="td">{fmt.number(c.usedCount)}{c.usageLimit ? ` / ${fmt.number(c.usageLimit)}` : ''}</td><td className="td">{fmt.date(c.expiresAt)}</td>
+              <td className="td">{c.isActive ? <span className="badge bg-green-100 text-green-800">{t('common.active')}</span> : <span className="badge bg-gray-200 text-gray-700">{t('common.inactive')}</span>}</td>
+              <td className="td whitespace-nowrap"><button className="text-brand-600" onClick={() => edit(c)}>{t('common.edit')}</button>
+                <button className="ms-3 text-red-600" onClick={async () => { if (confirm(t('common.confirmDelete'))) { await del(`admin/coupons/${c.id}`); await mutate(); } }}>{t('common.delete')}</button></td></tr>))}</tbody></table>
       </div>
     </div>
   );

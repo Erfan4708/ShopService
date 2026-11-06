@@ -4,9 +4,11 @@ import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/hooks';
 import { faToEn, safeNext } from '@/lib/format';
+import { useI18n } from '@/lib/i18n/client';
 import { Alert, Field } from '@/components/Ui';
 
 function LoginForm() {
+  const { t } = useI18n();
   const router = useRouter();
   const sp = useSearchParams();
   const next = safeNext(sp.get('next'));
@@ -34,27 +36,27 @@ function LoginForm() {
         <div className="grid grid-cols-2 rounded-lg bg-gray-100 p-1 text-sm">
           {(['login', 'register'] as const).map((m) => (
             <button key={m} type="button" onClick={() => { setMode(m); setErr(''); }}
-              className={`rounded-md py-2 ${mode === m ? 'bg-white font-bold shadow-sm' : 'text-gray-500'}`}>{m === 'login' ? 'ورود' : 'ثبت‌نام'}</button>
+              className={`rounded-md py-2 ${mode === m ? 'bg-white font-bold shadow-sm' : 'text-gray-500'}`}>{m === 'login' ? t('auth.login') : t('auth.register')}</button>
           ))}
         </div>
         <form onSubmit={submit} className="space-y-3">
           {mode === 'login' ? (
-            <Field label="ایمیل یا شماره موبایل"><input className="input" dir="ltr" required autoComplete="username" value={f.identifier} onChange={set('identifier')} /></Field>
+            <Field label={t('auth.identifier')}><input className="input" dir="ltr" required autoComplete="username" value={f.identifier} onChange={set('identifier')} /></Field>
           ) : (
             <>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="نام"><input className="input" required value={f.firstName} onChange={set('firstName')} /></Field>
-                <Field label="نام خانوادگی"><input className="input" required value={f.lastName} onChange={set('lastName')} /></Field>
+                <Field label={t('auth.firstName')}><input className="input" required value={f.firstName} onChange={set('firstName')} /></Field>
+                <Field label={t('auth.lastName')}><input className="input" required value={f.lastName} onChange={set('lastName')} /></Field>
               </div>
-              <Field label="ایمیل"><input className="input" dir="ltr" type="email" required autoComplete="email" value={f.email} onChange={set('email')} /></Field>
-              <Field label="شماره موبایل (اختیاری)"><input className="input" dir="ltr" inputMode="tel" value={f.phoneNumber} onChange={set('phoneNumber')} /></Field>
+              <Field label={t('auth.email')}><input className="input" dir="ltr" type="email" required autoComplete="email" value={f.email} onChange={set('email')} /></Field>
+              <Field label={t('auth.phoneOptional')}><input className="input" dir="ltr" inputMode="tel" value={f.phoneNumber} onChange={set('phoneNumber')} /></Field>
             </>
           )}
-          <Field label="رمز عبور" hint={mode === 'register' ? 'حداقل ۸ کاراکتر' : undefined}>
+          <Field label={t('auth.password')} hint={mode === 'register' ? t('auth.passwordHint') : undefined}>
             <input className="input" dir="ltr" type="password" required minLength={mode === 'register' ? 8 : 1} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={f.password} onChange={set('password')} />
           </Field>
           {err && <Alert>{err}</Alert>}
-          <button className="btn-primary w-full" disabled={busy}>{mode === 'login' ? 'ورود' : 'ساخت حساب'}</button>
+          <button className="btn-primary w-full" disabled={busy}>{mode === 'login' ? t('auth.login') : t('auth.createAccount')}</button>
         </form>
       </div>
     </div>

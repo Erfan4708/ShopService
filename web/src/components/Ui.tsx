@@ -3,20 +3,23 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useStore } from './Providers';
-import { formatDate, formatNumber, STATUS_COLOR, STATUS_LABEL } from '@/lib/format';
+import { useI18n } from '@/lib/i18n/client';
+import { STATUS_COLOR } from '@/lib/format';
 import type { OrderStatus } from '@/lib/types';
 
 export function Price({ value, className = '' }: { value: number; className?: string }) {
   const { currency } = useStore();
+  const { fmt } = useI18n();
   return (
     <span className={className}>
-      {formatNumber(value)} <span className="text-xs font-normal text-gray-500">{currency}</span>
+      {fmt.number(value)} <span className="text-xs font-normal text-gray-500">{currency}</span>
     </span>
   );
 }
 
 export function StatusBadge({ status }: { status: OrderStatus }) {
-  return <span className={`badge ${STATUS_COLOR[status]}`}>{STATUS_LABEL[status]}</span>;
+  const { t } = useI18n();
+  return <span className={`badge ${STATUS_COLOR[status]}`}>{t(`status.${status}`)}</span>;
 }
 
 export function Alert({ kind = 'error', children }: { kind?: 'error' | 'success' | 'info'; children: ReactNode }) {
@@ -25,7 +28,8 @@ export function Alert({ kind = 'error', children }: { kind?: 'error' | 'success'
 }
 
 export function Spinner() {
-  return <div className="py-12 text-center text-sm text-gray-500">در حال بارگذاری…</div>;
+  const { t } = useI18n();
+  return <div className="py-12 text-center text-sm text-gray-500">{t('common.loading')}</div>;
 }
 
 export function Empty({ children }: { children: ReactNode }) {
@@ -33,22 +37,24 @@ export function Empty({ children }: { children: ReactNode }) {
 }
 
 export function Stars({ value }: { value: number }) {
+  const { t, fmt } = useI18n();
   const full = Math.round(value);
   return (
-    <span className="text-amber-500" aria-label={`امتیاز ${value}`}>
-      {'âک…'.repeat(full)}
-      <span className="text-gray-300">{'âک…'.repeat(5 - full)}</span>
+    <span className="text-amber-500" aria-label={t('ui.rating', { value: fmt.number(value) })}>
+      {'★'.repeat(full)}
+      <span className="text-gray-300">{'★'.repeat(5 - full)}</span>
     </span>
   );
 }
 
 export function Pagination({ page, totalPages, basePath = '/products', query = '', onPage }: { page: number; totalPages: number; basePath?: string; query?: string; onPage?: (p: number) => void }) {
+  const { t, fmt } = useI18n();
   if (totalPages <= 1) return null;
   const pages: number[] = [];
   for (let p = Math.max(1, page - 2); p <= Math.min(totalPages, page + 2); p++) pages.push(p);
   const cls = (active: boolean) => `btn ${active ? 'bg-brand-600 text-white' : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'} min-w-9 px-3`;
   return (
-    <nav className="mt-6 flex flex-wrap justify-center gap-1" aria-label="صفحه‌بندی">
+    <nav className="mt-6 flex flex-wrap justify-center gap-1" aria-label={t('ui.pagination')}>
       {pages.map((p) => {
         const params = new URLSearchParams(query);
         params.set('page', String(p));
@@ -60,7 +66,7 @@ export function Pagination({ page, totalPages, basePath = '/products', query = '
             href={href}
             className={cls(p === page)}
           >
-            {formatNumber(p)}
+            {fmt.number(p)}
           </Link>
         );
       })}
@@ -98,6 +104,7 @@ export function Field({ label, children, hint }: { label: string; children: Reac
 }
 
 export function Timeline({ items }: { items: { status: OrderStatus; note: string | null; createdAt: string }[] }) {
+  const { fmt } = useI18n();
   return (
     <ol className="space-y-3 border-s-2 border-gray-200 ps-4">
       {items.map((h, i) => (
@@ -105,7 +112,7 @@ export function Timeline({ items }: { items: { status: OrderStatus; note: string
           <span className="absolute -start-[1.4rem] top-1.5 h-3 w-3 rounded-full bg-brand-600" />
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={h.status} />
-            <span className="text-xs text-gray-500">{formatDate(h.createdAt)}</span>
+            <span className="text-xs text-gray-500">{fmt.date(h.createdAt)}</span>
           </div>
           {h.note && <p className="mt-1 text-sm text-gray-600">{h.note}</p>}
         </li>
