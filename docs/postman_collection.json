@@ -1,0 +1,2703 @@
+{
+  "info": {
+    "name": "Shop API",
+    "description": "کالکشن کامل API فروشگاه. ترتیب پیشنهادی: Auth/ورود مدیر → Admin/دسته و محصول → Auth/ورود مشتری → Catalog → Cart → Checkout → Payment. متغیرها خودکار با اسکریپت تست پر می‌شوند.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "ثبت‌نام",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"User@12345\",\n  \"firstName\": \"علی\",\n  \"lastName\": \"رضایی\",\n  \"phoneNumber\": \"09121234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); pm.collectionVariables.set(\"accessToken\", j.accessToken); pm.collectionVariables.set(\"refreshToken\", j.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ورود مشتری",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"user@example.com\",\n  \"password\": \"User@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); pm.collectionVariables.set(\"accessToken\", j.accessToken); pm.collectionVariables.set(\"refreshToken\", j.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ورود مدیر (کاربر seed)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"admin@shop.local\",\n  \"password\": \"Admin@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); pm.collectionVariables.set(\"accessToken\", j.accessToken); pm.collectionVariables.set(\"refreshToken\", j.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh توکن",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "refresh"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); pm.collectionVariables.set(\"accessToken\", j.accessToken); pm.collectionVariables.set(\"refreshToken\", j.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "خروج",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "مشاهده پروفایل",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "profile"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "ویرایش پروفایل",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"علی\",\n  \"lastName\": \"رضایی\",\n  \"phoneNumber\": \"09121234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "تغییر رمز",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "change-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"User@12345\",\n  \"newPassword\": \"User@67890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "لیست آدرس‌ها",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "addresses"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.length){pm.collectionVariables.set(\"addressId\", j[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "افزودن آدرس",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "addresses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"خانه\",\n  \"receiverName\": \"علی رضایی\",\n  \"receiverPhone\": \"09121234567\",\n  \"province\": \"تهران\",\n  \"city\": \"تهران\",\n  \"postalCode\": \"1234567890\",\n  \"addressLine\": \"خیابان ولیعصر، پلاک ۱\",\n  \"isDefault\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  pm.collectionVariables.set(\"addressId\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ویرایش آدرس",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"محل کار\",\n  \"receiverName\": \"علی رضایی\",\n  \"receiverPhone\": \"09121234567\",\n  \"province\": \"تهران\",\n  \"city\": \"تهران\",\n  \"postalCode\": \"1234567890\",\n  \"addressLine\": \"میدان ونک\",\n  \"isDefault\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف آدرس",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/account/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "account",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "لیست محصولات",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products?inStockOnly=false&sort=Newest&page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "categorySlug",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "inStockOnly",
+                  "value": "false",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "Newest",
+                  "disabled": false
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.items.length){pm.collectionVariables.set(\"productId\", j.items[0].id); pm.collectionVariables.set(\"productSlug\", j.items[0].slug);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "جزئیات محصول",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{productSlug}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{productSlug}}"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        },
+        {
+          "name": "درخت دسته‌بندی‌ها",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        },
+        {
+          "name": "نظرات محصول",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{productId}}/reviews?page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{productId}}",
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        },
+        {
+          "name": "ثبت نظر",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{productId}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{productId}}",
+                "reviews"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"عالی بود\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "تنظیمات عمومی فروشگاه",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/settings/public",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "settings",
+                "public"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "مشاهده سبد",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.token){pm.collectionVariables.set(\"cartToken\", j.token);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "افزودن به سبد",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"quantity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.token){pm.collectionVariables.set(\"cartToken\", j.token);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "تغییر تعداد (0=حذف)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/items/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items",
+                "{{productId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.token){pm.collectionVariables.set(\"cartToken\", j.token);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "حذف کالا از سبد",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/items/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items",
+                "{{productId}}"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.token){pm.collectionVariables.set(\"cartToken\", j.token);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "خالی‌کردن سبد",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        },
+        {
+          "name": "اعمال کد تخفیف",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"WELCOME10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف کد تخفیف",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "coupon"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        },
+        {
+          "name": "ادغام سبد مهمان بعد از ورود",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Cart-Token",
+                "value": "{{cartToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cart/merge",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "merge"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Checkout",
+      "item": [
+        {
+          "name": "روش‌های ارسال",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/shipping-methods",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "shipping-methods"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.length){pm.collectionVariables.set(\"shippingMethodId\", j[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "پیش‌نمایش مبلغ نهایی",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/checkout/preview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "checkout",
+                "preview"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingMethodId\": \"{{shippingMethodId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "ثبت سفارش",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "checkout"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": \"{{addressId}}\",\n  \"shippingMethodId\": \"{{shippingMethodId}}\",\n  \"note\": \"لطفاً قبل از ارسال تماس بگیرید\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); pm.collectionVariables.set(\"orderId\", j.id); pm.collectionVariables.set(\"orderNumber\", j.orderNumber);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "درگاه‌های فعال",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/gateways",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "gateways"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "شروع پرداخت",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/start",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "start"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{orderId}}\",\n  \"gateway\": \"Fake\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); pm.collectionVariables.set(\"paymentId\", j.paymentId); console.log(\"برای پرداخت این آدرس را در مرورگر باز کنید:\", j.paymentUrl);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Callback درگاه (JSON برای تست)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/callback/{{paymentId}}?status=OK&format=json",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "callback",
+                "{{paymentId}}"
+              ],
+              "query": [
+                {
+                  "key": "authority",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "OK",
+                  "disabled": false
+                },
+                {
+                  "key": "format",
+                  "value": "json",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "سفارش‌های من",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders?page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "جزئیات سفارش من",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/{{orderNumber}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "{{orderNumber}}"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "لغو سفارش پرداخت‌نشده",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/{{orderNumber}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "{{orderNumber}}",
+                "cancel"
+              ]
+            },
+            "description": "نیازمند ورود (مشتری)"
+          },
+          "response": []
+        },
+        {
+          "name": "پیگیری سفارش (عمومی)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/track",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "track"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderNumber\": \"{{orderNumber}}\",\n  \"phone\": \"09121234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "عمومی"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Products",
+      "item": [
+        {
+          "name": "لیست محصولات",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products?lowStockOnly=false&page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "lowStockOnly",
+                  "value": "false",
+                  "disabled": false
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.items.length){pm.collectionVariables.set(\"adminProductId\", j.items[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "جزئیات محصول",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "افزودن محصول",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"محصول جدید\",\n  \"slug\": \"\",\n  \"sku\": \"SKU-100\",\n  \"shortDescription\": \"توضیح کوتاه\",\n  \"description\": \"توضیحات کامل\",\n  \"brand\": \"برند\",\n  \"price\": 500000,\n  \"compareAtPrice\": 600000,\n  \"stockQuantity\": 20,\n  \"trackInventory\": true,\n  \"isActive\": true,\n  \"isFeatured\": false,\n  \"weight\": 1.5,\n  \"categoryId\": \"{{categoryId}}\",\n  \"attributes\": [\n    {\n      \"name\": \"رنگ\",\n      \"value\": \"قرمز\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  pm.collectionVariables.set(\"adminProductId\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ویرایش محصول",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"محصول جدید\",\n  \"slug\": \"\",\n  \"sku\": \"SKU-100\",\n  \"shortDescription\": \"توضیح کوتاه\",\n  \"description\": \"توضیحات کامل\",\n  \"brand\": \"برند\",\n  \"price\": 500000,\n  \"compareAtPrice\": 600000,\n  \"stockQuantity\": 20,\n  \"trackInventory\": true,\n  \"isActive\": true,\n  \"isFeatured\": false,\n  \"weight\": 1.5,\n  \"categoryId\": \"{{categoryId}}\",\n  \"attributes\": [\n    {\n      \"name\": \"رنگ\",\n      \"value\": \"قرمز\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف محصول",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "تنظیم موجودی",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}/stock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}",
+                "stock"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newQuantity\": 50,\n  \"reason\": \"ورود کالا\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "آپلود تصویر (form-data: File, AltText, IsMain)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}",
+                "images"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "File",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "AltText",
+                  "value": "تصویر محصول",
+                  "type": "text"
+                },
+                {
+                  "key": "IsMain",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  pm.collectionVariables.set(\"imageId\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "حذف تصویر",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}/images/{{imageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}",
+                "images",
+                "{{imageId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "تصویر اصلی",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{adminProductId}}/images/{{imageId}}/main",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products",
+                "{{adminProductId}}",
+                "images",
+                "{{imageId}}",
+                "main"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Categories",
+      "item": [
+        {
+          "name": "لیست دسته‌ها",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "categories"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.length){pm.collectionVariables.set(\"categoryId\", j[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "افزودن دسته",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"دسته جدید\",\n  \"slug\": \"\",\n  \"description\": \"\",\n  \"imageUrl\": null,\n  \"parentId\": null,\n  \"sortOrder\": 0,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  pm.collectionVariables.set(\"categoryId\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ویرایش دسته",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "categories",
+                "{{categoryId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"دسته ویرایش‌شده\",\n  \"slug\": \"\",\n  \"description\": \"\",\n  \"imageUrl\": null,\n  \"parentId\": null,\n  \"sortOrder\": 1,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف دسته",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "categories",
+                "{{categoryId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Orders",
+      "item": [
+        {
+          "name": "لیست سفارش‌ها",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/orders?page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "from",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "to",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "جزئیات سفارش",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/orders/{{orderNumber}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "orders",
+                "{{orderNumber}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "تغییر وضعیت سفارش",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/orders/{{orderNumber}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "orders",
+                "{{orderNumber}}",
+                "status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Shipped\",\n  \"note\": \"تحویل پست شد\",\n  \"trackingCode\": \"24000123456789012345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Coupons",
+      "item": [
+        {
+          "name": "لیست کوپن‌ها",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.length){pm.collectionVariables.set(\"couponId\", j[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ایجاد کوپن",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SUMMER20\",\n  \"description\": \"تخفیف تابستانه\",\n  \"type\": \"Percent\",\n  \"value\": 20,\n  \"maxDiscountAmount\": 300000,\n  \"minOrderAmount\": 500000,\n  \"usageLimit\": 100,\n  \"startsAt\": null,\n  \"expiresAt\": null,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  pm.collectionVariables.set(\"couponId\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ویرایش کوپن",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/coupons/{{couponId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons",
+                "{{couponId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SUMMER20\",\n  \"description\": \"\",\n  \"type\": \"FixedAmount\",\n  \"value\": 50000,\n  \"maxDiscountAmount\": null,\n  \"minOrderAmount\": null,\n  \"usageLimit\": null,\n  \"startsAt\": null,\n  \"expiresAt\": null,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف کوپن",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/coupons/{{couponId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons",
+                "{{couponId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Shipping",
+      "item": [
+        {
+          "name": "لیست روش‌های ارسال",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/shipping-methods",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "shipping-methods"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.length){pm.collectionVariables.set(\"adminShippingId\", j[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "افزودن روش ارسال",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/shipping-methods",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "shipping-methods"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"تیپاکس\",\n  \"description\": \"ارسال با تیپاکس\",\n  \"cost\": 60000,\n  \"freeAboveAmount\": 3000000,\n  \"estimatedDays\": 3,\n  \"sortOrder\": 3,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  pm.collectionVariables.set(\"adminShippingId\", pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ویرایش روش ارسال",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/shipping-methods/{{adminShippingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "shipping-methods",
+                "{{adminShippingId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"تیپاکس\",\n  \"description\": \"ارسال با تیپاکس\",\n  \"cost\": 60000,\n  \"freeAboveAmount\": 3000000,\n  \"estimatedDays\": 3,\n  \"sortOrder\": 3,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف روش ارسال",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/shipping-methods/{{adminShippingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "shipping-methods",
+                "{{adminShippingId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Reviews",
+      "item": [
+        {
+          "name": "لیست نظرات",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/reviews?isApproved=false&page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "isApproved",
+                  "value": "false",
+                  "disabled": false
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.items.length){pm.collectionVariables.set(\"reviewId\", j.items[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "تایید نظر",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/reviews/{{reviewId}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "reviews",
+                "{{reviewId}}",
+                "approve"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "رد نظر",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/reviews/{{reviewId}}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "reviews",
+                "{{reviewId}}",
+                "reject"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        },
+        {
+          "name": "حذف نظر",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/reviews/{{reviewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "reviews",
+                "{{reviewId}}"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Users (Admin)",
+      "item": [
+        {
+          "name": "لیست کاربران",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users?page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "فقط Admin"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if(pm.response.code>=200 && pm.response.code<300){",
+                  "  var j=pm.response.json(); if(j.items.length){pm.collectionVariables.set(\"userId\", j.items[0].id);}",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "جزئیات کاربر",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": "فقط Admin"
+          },
+          "response": []
+        },
+        {
+          "name": "تغییر نقش/وضعیت",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Manager\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "فقط Admin"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Settings (Admin)",
+      "item": [
+        {
+          "name": "همه تنظیمات",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "settings"
+              ]
+            },
+            "description": "فقط Admin"
+          },
+          "response": []
+        },
+        {
+          "name": "به‌روزرسانی تنظیمات",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "settings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"settings\": {\n    \"Store.Name\": \"فروشگاه من\",\n    \"Tax.Percent\": \"10\",\n    \"Order.PendingExpirationMinutes\": \"30\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "فقط Admin"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Dashboard",
+      "item": [
+        {
+          "name": "داشبورد آماری",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "dashboard"
+              ]
+            },
+            "description": "نیازمند نقش Admin یا Manager"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "cartToken",
+      "value": ""
+    },
+    {
+      "key": "productId",
+      "value": ""
+    },
+    {
+      "key": "productSlug",
+      "value": ""
+    },
+    {
+      "key": "addressId",
+      "value": ""
+    },
+    {
+      "key": "shippingMethodId",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "orderNumber",
+      "value": ""
+    },
+    {
+      "key": "paymentId",
+      "value": ""
+    },
+    {
+      "key": "categoryId",
+      "value": ""
+    },
+    {
+      "key": "adminProductId",
+      "value": ""
+    },
+    {
+      "key": "imageId",
+      "value": ""
+    },
+    {
+      "key": "couponId",
+      "value": ""
+    },
+    {
+      "key": "adminShippingId",
+      "value": ""
+    },
+    {
+      "key": "reviewId",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,3375 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Shop API",
+    "version": "v1",
+    "description": "مرجع ایستای API. نسخه زنده با مدل‌های کامل: http://localhost:8080/swagger"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "ثبت‌نام",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "email": "user@example.com",
+                "password": "User@12345",
+                "firstName": "علی",
+                "lastName": "رضایی",
+                "phoneNumber": "09121234567"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "ورود مدیر (کاربر seed)",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "identifier": "admin@shop.local",
+                "password": "Admin@12345"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh توکن",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "refreshToken": "{{refreshToken}}"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "خروج",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "refreshToken": "{{refreshToken}}"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/profile": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "مشاهده پروفایل",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "ویرایش پروفایل",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "firstName": "علی",
+                "lastName": "رضایی",
+                "phoneNumber": "09121234567"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/account/change-password": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "تغییر رمز",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "currentPassword": "User@12345",
+                "newPassword": "User@67890"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/account/addresses": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "لیست آدرس‌ها",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "افزودن آدرس",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "title": "خانه",
+                "receiverName": "علی رضایی",
+                "receiverPhone": "09121234567",
+                "province": "تهران",
+                "city": "تهران",
+                "postalCode": "1234567890",
+                "addressLine": "خیابان ولیعصر، پلاک ۱",
+                "isDefault": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/account/addresses/{addressId}": {
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "ویرایش آدرس",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "title": "محل کار",
+                "receiverName": "علی رضایی",
+                "receiverPhone": "09121234567",
+                "province": "تهران",
+                "city": "تهران",
+                "postalCode": "1234567890",
+                "addressLine": "میدان ونک",
+                "isDefault": false
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "حذف آدرس",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "لیست محصولات",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "categorySlug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "inStockOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "false"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Newest"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ]
+      }
+    },
+    "/products/{productSlug}": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "جزئیات محصول",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "productSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "درخت دسته‌بندی‌ها",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        }
+      }
+    },
+    "/products/{productId}/reviews": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "نظرات محصول",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "ثبت نظر",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "rating": 5,
+                "comment": "عالی بود"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/settings/public": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "تنظیمات عمومی فروشگاه",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "مشاهده سبد",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "خالی‌کردن سبد",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/cart/items": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "افزودن به سبد",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "productId": "{{productId}}",
+                "quantity": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/items/{productId}": {
+      "put": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "تغییر تعداد (0=حذف)",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "quantity": 2
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "حذف کالا از سبد",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/cart/coupon": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "اعمال کد تخفیف",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "code": "WELCOME10"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "حذف کد تخفیف",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/cart/merge": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "ادغام سبد مهمان بعد از ورود",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Cart-Token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/shipping-methods": {
+      "get": {
+        "tags": [
+          "Checkout"
+        ],
+        "summary": "روش‌های ارسال",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        }
+      }
+    },
+    "/checkout/preview": {
+      "post": {
+        "tags": [
+          "Checkout"
+        ],
+        "summary": "پیش‌نمایش مبلغ نهایی",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "shippingMethodId": "{{shippingMethodId}}"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/checkout": {
+      "post": {
+        "tags": [
+          "Checkout"
+        ],
+        "summary": "ثبت سفارش",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "addressId": "{{addressId}}",
+                "shippingMethodId": "{{shippingMethodId}}",
+                "note": "لطفاً قبل از ارسال تماس بگیرید"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/payments/gateways": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "درگاه‌های فعال",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/payments/start": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "شروع پرداخت",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "orderId": "{{orderId}}",
+                "gateway": "Fake"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/payments/callback/{paymentId}": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Callback درگاه (JSON برای تست)",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "OK"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "json"
+          }
+        ]
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "سفارش‌های من",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/{orderNumber}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "جزئیات سفارش من",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/{orderNumber}/cancel": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "لغو سفارش پرداخت‌نشده",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/orders/track": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "پیگیری سفارش (عمومی)",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "orderNumber": "{{orderNumber}}",
+                "phone": "09121234567"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products": {
+      "get": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "لیست محصولات",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "lowStockOnly",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "false"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "افزودن محصول",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "name": "محصول جدید",
+                "slug": "",
+                "sku": "SKU-100",
+                "shortDescription": "توضیح کوتاه",
+                "description": "توضیحات کامل",
+                "brand": "برند",
+                "price": 500000,
+                "compareAtPrice": 600000,
+                "stockQuantity": 20,
+                "trackInventory": true,
+                "isActive": true,
+                "isFeatured": false,
+                "weight": 1.5,
+                "categoryId": "{{categoryId}}",
+                "attributes": [
+                  {
+                    "name": "رنگ",
+                    "value": "قرمز"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{adminProductId}": {
+      "get": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "جزئیات محصول",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "ویرایش محصول",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "name": "محصول جدید",
+                "slug": "",
+                "sku": "SKU-100",
+                "shortDescription": "توضیح کوتاه",
+                "description": "توضیحات کامل",
+                "brand": "برند",
+                "price": 500000,
+                "compareAtPrice": 600000,
+                "stockQuantity": 20,
+                "trackInventory": true,
+                "isActive": true,
+                "isFeatured": false,
+                "weight": 1.5,
+                "categoryId": "{{categoryId}}",
+                "attributes": [
+                  {
+                    "name": "رنگ",
+                    "value": "قرمز"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "حذف محصول",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{adminProductId}/stock": {
+      "post": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "تنظیم موجودی",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "newQuantity": 50,
+                "reason": "ورود کالا"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{adminProductId}/images": {
+      "post": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "آپلود تصویر (form-data: File, AltText, IsMain)",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "AltText": {
+                    "type": "string"
+                  },
+                  "IsMain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "File"
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{adminProductId}/images/{imageId}": {
+      "delete": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "حذف تصویر",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{adminProductId}/images/{imageId}/main": {
+      "put": {
+        "tags": [
+          "Admin - Products"
+        ],
+        "summary": "تصویر اصلی",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminProductId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/categories": {
+      "get": {
+        "tags": [
+          "Admin - Categories"
+        ],
+        "summary": "لیست دسته‌ها",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin - Categories"
+        ],
+        "summary": "افزودن دسته",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "name": "دسته جدید",
+                "slug": "",
+                "description": "",
+                "imageUrl": null,
+                "parentId": null,
+                "sortOrder": 0,
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/categories/{categoryId}": {
+      "put": {
+        "tags": [
+          "Admin - Categories"
+        ],
+        "summary": "ویرایش دسته",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "name": "دسته ویرایش‌شده",
+                "slug": "",
+                "description": "",
+                "imageUrl": null,
+                "parentId": null,
+                "sortOrder": 1,
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Admin - Categories"
+        ],
+        "summary": "حذف دسته",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/orders": {
+      "get": {
+        "tags": [
+          "Admin - Orders"
+        ],
+        "summary": "لیست سفارش‌ها",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/{orderNumber}": {
+      "get": {
+        "tags": [
+          "Admin - Orders"
+        ],
+        "summary": "جزئیات سفارش",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/{orderNumber}/status": {
+      "put": {
+        "tags": [
+          "Admin - Orders"
+        ],
+        "summary": "تغییر وضعیت سفارش",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "status": "Shipped",
+                "note": "تحویل پست شد",
+                "trackingCode": "24000123456789012345"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/coupons": {
+      "get": {
+        "tags": [
+          "Admin - Coupons"
+        ],
+        "summary": "لیست کوپن‌ها",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin - Coupons"
+        ],
+        "summary": "ایجاد کوپن",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "code": "SUMMER20",
+                "description": "تخفیف تابستانه",
+                "type": "Percent",
+                "value": 20,
+                "maxDiscountAmount": 300000,
+                "minOrderAmount": 500000,
+                "usageLimit": 100,
+                "startsAt": null,
+                "expiresAt": null,
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/coupons/{couponId}": {
+      "put": {
+        "tags": [
+          "Admin - Coupons"
+        ],
+        "summary": "ویرایش کوپن",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "couponId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "code": "SUMMER20",
+                "description": "",
+                "type": "FixedAmount",
+                "value": 50000,
+                "maxDiscountAmount": null,
+                "minOrderAmount": null,
+                "usageLimit": null,
+                "startsAt": null,
+                "expiresAt": null,
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Admin - Coupons"
+        ],
+        "summary": "حذف کوپن",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "couponId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/shipping-methods": {
+      "get": {
+        "tags": [
+          "Admin - Shipping"
+        ],
+        "summary": "لیست روش‌های ارسال",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin - Shipping"
+        ],
+        "summary": "افزودن روش ارسال",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "name": "تیپاکس",
+                "description": "ارسال با تیپاکس",
+                "cost": 60000,
+                "freeAboveAmount": 3000000,
+                "estimatedDays": 3,
+                "sortOrder": 3,
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/shipping-methods/{adminShippingId}": {
+      "put": {
+        "tags": [
+          "Admin - Shipping"
+        ],
+        "summary": "ویرایش روش ارسال",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminShippingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "name": "تیپاکس",
+                "description": "ارسال با تیپاکس",
+                "cost": 60000,
+                "freeAboveAmount": 3000000,
+                "estimatedDays": 3,
+                "sortOrder": 3,
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Admin - Shipping"
+        ],
+        "summary": "حذف روش ارسال",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "adminShippingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews": {
+      "get": {
+        "tags": [
+          "Admin - Reviews"
+        ],
+        "summary": "لیست نظرات",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "isApproved",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "false"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews/{reviewId}/approve": {
+      "put": {
+        "tags": [
+          "Admin - Reviews"
+        ],
+        "summary": "تایید نظر",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews/{reviewId}/reject": {
+      "put": {
+        "tags": [
+          "Admin - Reviews"
+        ],
+        "summary": "رد نظر",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews/{reviewId}": {
+      "delete": {
+        "tags": [
+          "Admin - Reviews"
+        ],
+        "summary": "حذف نظر",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "Admin - Users (Admin)"
+        ],
+        "summary": "لیست کاربران",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": ""
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "20"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/users/{userId}": {
+      "get": {
+        "tags": [
+          "Admin - Users (Admin)"
+        ],
+        "summary": "جزئیات کاربر",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Admin - Users (Admin)"
+        ],
+        "summary": "تغییر نقش/وضعیت",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "role": "Manager",
+                "isActive": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/settings": {
+      "get": {
+        "tags": [
+          "Admin - Settings (Admin)"
+        ],
+        "summary": "همه تنظیمات",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Admin - Settings (Admin)"
+        ],
+        "summary": "به‌روزرسانی تنظیمات",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "settings": {
+                  "Store.Name": "فروشگاه من",
+                  "Tax.Percent": "10",
+                  "Order.PendingExpirationMinutes": "30"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/dashboard": {
+      "get": {
+        "tags": [
+          "Admin - Dashboard"
+        ],
+        "summary": "داشبورد آماری",
+        "responses": {
+          "200": {
+            "description": "موفق"
+          },
+          "400": {
+            "description": "داده نامعتبر"
+          },
+          "401": {
+            "description": "احراز هویت لازم است"
+          },
+          "403": {
+            "description": "دسترسی ندارید"
+          },
+          "404": {
+            "description": "یافت نشد"
+          },
+          "422": {
+            "description": "نقض قوانین کسب‌وکار"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== تم فروشگاه: برای هر کسب‌وکار فقط این رنگ‌ها را عوض کنید (فرمت: R G B) ===== */
+:root {
+  --brand-50: 238 242 255;
+  --brand-100: 224 231 255;
+  --brand-500: 99 102 241;
+  --brand-600: 79 70 229;
+  --brand-700: 67 56 202;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body { @apply bg-gray-50 text-gray-900 antialiased; }
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700; }
+  .btn-outline { @apply btn border border-gray-300 bg-white text-gray-700 hover:bg-gray-50; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+  .input { @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100; }
+  .label { @apply mb-1 block text-sm font-medium text-gray-700; }
+  .card { @apply rounded-xl border border-gray-200 bg-white p-4 shadow-sm; }
+  .badge { @apply inline-block rounded-full px-2.5 py-0.5 text-xs font-medium; }
+  .th { @apply px-3 py-2 text-start text-xs font-semibold text-gray-500; }
+  .td { @apply px-3 py-2 text-sm; }
+}

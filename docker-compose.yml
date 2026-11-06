@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD:-Your_strong_Passw0rd}
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: "Server=db,1433;Database=ShopDb;User Id=sa;Password=${SA_PASSWORD:-Your_strong_Passw0rd};TrustServerCertificate=True;"
+      Jwt__Secret: ${JWT_SECRET:-CHANGE_ME_use_a_long_random_secret_of_at_least_32_chars}
+      Seed__AdminEmail: ${ADMIN_EMAIL:-admin@shop.local}
+      Seed__AdminPassword: ${ADMIN_PASSWORD:-Admin@12345}
+      RateLimit__GlobalPerMinute: ${RATE_GLOBAL:-3000}
+      RateLimit__AuthPerMinute: ${RATE_AUTH:-60}
+      Payment__CallbackBaseUrl: ${PUBLIC_API_URL:-http://localhost:8080}
+      Payment__FrontendResultUrl: ${FRONTEND_RESULT_URL:-http://localhost:3000/payment/result}
+      Payment__DefaultGateway: ${DEFAULT_GATEWAY:-Fake}
+      Payment__EnableFakeGateway: ${ENABLE_FAKE_GATEWAY:-true}
+      Payment__ZarinPal__MerchantId: ${ZARINPAL_MERCHANT_ID:-}
+      Payment__ZarinPal__Sandbox: ${ZARINPAL_SANDBOX:-true}
+    volumes:
+      - uploads:/app/wwwroot/uploads
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    environment:
+      API_INTERNAL_URL: http://api:8080
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    restart: unless-stopped
+
+volumes:
+  sqldata:
+  uploads:

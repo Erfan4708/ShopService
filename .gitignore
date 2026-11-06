@@ -1,0 +1,7 @@
+bin/
+obj/
+.vs/
+.env
+*.user
+src/Shop.Api/wwwroot/uploads/*
+!src/Shop.Api/wwwroot/uploads/.gitkeep
